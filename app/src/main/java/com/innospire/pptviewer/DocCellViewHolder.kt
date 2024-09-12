@@ -1,4 +1,4 @@
-package com.cherry.doc
+package com.innospire.pptviewer
 
 import android.view.View
 import android.view.View.OnClickListener
@@ -6,9 +6,10 @@ import android.widget.AdapterView.OnItemClickListener
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.cherry.doc.data.DocInfo
+import com.innospire.pptviewer.data.DocInfo
 import com.cherry.lib.doc.bean.FileType
 import com.cherry.lib.doc.util.FileUtils
+import com.innospire.pptviewer.R
 import kotlinx.android.synthetic.main.rv_doc_item_cell.view.*
 import java.io.File
 

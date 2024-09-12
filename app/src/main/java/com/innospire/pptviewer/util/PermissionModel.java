@@ -1,4 +1,4 @@
-package com.cherry.doc.util;
+package com.innospire.pptviewer.util;
 
 import android.os.Parcel;
 import android.os.Parcelable;

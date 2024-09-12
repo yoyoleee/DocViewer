@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace 'com.cherry.doc'
+    namespace 'com.innospire.pptviewer'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.cherry.doc"
+        applicationId "com.innospire.pptviewer"
         minSdk 24
         targetSdk 33
         versionCode 1

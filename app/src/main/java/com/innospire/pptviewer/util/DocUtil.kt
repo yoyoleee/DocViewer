@@ -1,16 +1,13 @@
-package com.cherry.doc.util
+package com.innospire.pptviewer.util
 
 import android.content.Context
 import android.provider.MediaStore
 import android.util.Log
 import android.webkit.MimeTypeMap
-import com.cherry.doc.data.DocGroupInfo
-import com.cherry.doc.data.DocInfo
+import com.innospire.pptviewer.data.DocGroupInfo
+import com.innospire.pptviewer.data.DocInfo
 import com.cherry.lib.doc.bean.FileType
 import com.cherry.lib.doc.util.FileUtils
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import java.text.SimpleDateFormat
 import java.util.ArrayList
@@ -30,17 +27,17 @@ import java.util.Date
 object DocUtil {
     private val TAG = "DocUtil"
     fun getDocFile(context: Context): ArrayList<DocGroupInfo> {
-        val pdf = MimeTypeMap.getSingleton().getMimeTypeFromExtension("pdf")
-        val doc = MimeTypeMap.getSingleton().getMimeTypeFromExtension("doc")
-        val docx = MimeTypeMap.getSingleton().getMimeTypeFromExtension("docx")
-        val xls = MimeTypeMap.getSingleton().getMimeTypeFromExtension("xls")
-        val xlsx = MimeTypeMap.getSingleton().getMimeTypeFromExtension("xlsx")
+//        val pdf = MimeTypeMap.getSingleton().getMimeTypeFromExtension("pdf")
+//        val doc = MimeTypeMap.getSingleton().getMimeTypeFromExtension("doc")
+//        val docx = MimeTypeMap.getSingleton().getMimeTypeFromExtension("docx")
+//        val xls = MimeTypeMap.getSingleton().getMimeTypeFromExtension("xls")
+//        val xlsx = MimeTypeMap.getSingleton().getMimeTypeFromExtension("xlsx")
         val ppt = MimeTypeMap.getSingleton().getMimeTypeFromExtension("ppt")
         val pptx = MimeTypeMap.getSingleton().getMimeTypeFromExtension("pptx")
-        val txt = MimeTypeMap.getSingleton().getMimeTypeFromExtension("txt")
-        val png = MimeTypeMap.getSingleton().getMimeTypeFromExtension("png")
-        val jpg = MimeTypeMap.getSingleton().getMimeTypeFromExtension("jpg")
-        val jpeg = MimeTypeMap.getSingleton().getMimeTypeFromExtension("jpeg")
+//        val txt = MimeTypeMap.getSingleton().getMimeTypeFromExtension("txt")
+//        val png = MimeTypeMap.getSingleton().getMimeTypeFromExtension("png")
+//        val jpg = MimeTypeMap.getSingleton().getMimeTypeFromExtension("jpg")
+//        val jpeg = MimeTypeMap.getSingleton().getMimeTypeFromExtension("jpeg")
         //Table
         val table = MediaStore.Files.getContentUri(MediaStore.VOLUME_EXTERNAL)
         //Column
@@ -70,7 +67,8 @@ object DocUtil {
                 + " OR " + MediaStore.Files.FileColumns.MIME_TYPE + "=?"
                 + " OR " + MediaStore.Files.FileColumns.MIME_TYPE + "=?")
         //args
-        val selectionArgs = arrayOf(pdf, doc, docx, xls, xlsx, ppt, pptx, txt,png,jpg,jpeg)
+        //val selectionArgs = arrayOf(pdf, doc, docx, xls, xlsx, ppt, pptx, txt,png,jpg,jpeg)
+        val selectionArgs = arrayOf(ppt, pptx)
         val fileCursor = context.contentResolver.query(table, column, selection, selectionArgs, null)
 
         val displayNameKey = fileCursor!!.getColumnIndexOrThrow(MediaStore.MediaColumns.DISPLAY_NAME)
@@ -132,12 +130,12 @@ object DocUtil {
         }
 
 
-        docGroupList.add(DocGroupInfo("DOC & DOCX",docList))
-        docGroupList.add(DocGroupInfo("XLS & XLSX",excelList))
+//        docGroupList.add(DocGroupInfo("DOC & DOCX",docList))
+//        docGroupList.add(DocGroupInfo("XLS & XLSX",excelList))
         docGroupList.add(DocGroupInfo("PPT & PPTX",pptList))
-        docGroupList.add(DocGroupInfo("PDF",pdfList))
-        docGroupList.add(DocGroupInfo("TXT",txtList))
-        docGroupList.add(DocGroupInfo("IMAGE",imageList))
+//        docGroupList.add(DocGroupInfo("PDF",pdfList))
+//        docGroupList.add(DocGroupInfo("TXT",txtList))
+//        docGroupList.add(DocGroupInfo("IMAGE",imageList))
 
         return docGroupList
     }

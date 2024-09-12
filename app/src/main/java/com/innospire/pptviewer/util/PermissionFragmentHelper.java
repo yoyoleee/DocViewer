@@ -1,4 +1,4 @@
-package com.cherry.doc.util;
+package com.innospire.pptviewer.util;
 
 import android.Manifest;
 import android.content.Context;

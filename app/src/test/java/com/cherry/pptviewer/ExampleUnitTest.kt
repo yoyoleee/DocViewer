@@ -1,4 +1,4 @@
-package com.cherry.doc
+package com.cherry.pptviewer
 
 import org.junit.Test
 

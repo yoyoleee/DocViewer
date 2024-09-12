@@ -30,13 +30,15 @@
         android:theme="@style/Theme.DocViewer"
         tools:targetApi="31">
         <activity
-            android:name=".WordActivity"
+            android:name="com.innospire.pptviewer.WordActivity"
             android:exported="false" />
         <activity
             android:name="com.cherry.lib.doc.DocViewerActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.innospire.pptviewer.MainActivity"
+            android:screenOrientation="landscape"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

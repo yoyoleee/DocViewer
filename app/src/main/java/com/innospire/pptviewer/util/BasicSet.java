@@ -1,9 +1,6 @@
-package com.cherry.doc.util;
+package com.innospire.pptviewer.util;
 
 import android.content.Context;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.WindowManager;
 
 import com.cherry.lib.doc.office.fc.hwpf.usermodel.Picture;
 import com.cherry.lib.doc.office.fc.hwpf.usermodel.TableIterator;

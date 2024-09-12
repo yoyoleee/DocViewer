@@ -1,4 +1,4 @@
-package com.cherry.doc
+package com.innospire.pptviewer
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Toast
 import com.cherry.lib.doc.util.Constant
 import com.cherry.lib.doc.widget.PoiViewer
+import com.innospire.pptviewer.R
 import kotlinx.android.synthetic.main.activity_word.mFlDocContainer
 
 class WordActivity : AppCompatActivity() {

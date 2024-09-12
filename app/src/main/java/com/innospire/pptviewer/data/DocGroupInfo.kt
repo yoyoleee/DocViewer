@@ -1,17 +1,17 @@
-package com.cherry.doc
-
-import android.app.Application
+package com.innospire.pptviewer.data
 
 /*
  * -----------------------------------------------------------------
  * Copyright (C) 2018-2028, by Victor, All rights reserved.
  * -----------------------------------------------------------------
- * File: App
+ * File: DocGroupInfo
  * Author: Victor
- * Date: 2023/10/16 17:26
+ * Date: 2023/10/26 14:25
  * Description: 
  * -----------------------------------------------------------------
  */
 
-class App: Application() {
-}
+data class DocGroupInfo(
+    var typeName: String? = null,
+    var docList: ArrayList<DocInfo>? = null
+)

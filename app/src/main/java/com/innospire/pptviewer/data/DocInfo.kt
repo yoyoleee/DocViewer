@@ -1,6 +1,4 @@
-package com.cherry.doc.data
-
-import com.cherry.doc.R
+package com.innospire.pptviewer.data
 
 /*
  * -----------------------------------------------------------------
@@ -22,30 +20,30 @@ class DocInfo {
     var fileSize: String? = null
 
     fun getTypeIcon(): Int {
-        if (fileName?.lowercase()?.endsWith("pdf") == true) {
-            return com.cherry.lib.doc.R.drawable.pdf_ic
-        }
-        if (fileName?.lowercase()?.endsWith("doc") == true) {
-            return com.cherry.lib.doc.R.drawable.file_doc
-        }
-        if (fileName?.lowercase()?.endsWith("docx") == true) {
-            return com.cherry.lib.doc.R.drawable.file_docx
-        }
-        if (fileName?.lowercase()?.endsWith("xls") == true) {
-            return com.cherry.lib.doc.R.drawable.file_xls
-        }
-        if (fileName?.lowercase()?.endsWith("xlsx") == true) {
-            return com.cherry.lib.doc.R.drawable.file_xlsx
-        }
+//        if (fileName?.lowercase()?.endsWith("pdf") == true) {
+//            return com.cherry.lib.doc.R.drawable.pdf_ic
+//        }
+//        if (fileName?.lowercase()?.endsWith("doc") == true) {
+//            return com.cherry.lib.doc.R.drawable.file_doc
+//        }
+//        if (fileName?.lowercase()?.endsWith("docx") == true) {
+//            return com.cherry.lib.doc.R.drawable.file_docx
+//        }
+//        if (fileName?.lowercase()?.endsWith("xls") == true) {
+//            return com.cherry.lib.doc.R.drawable.file_xls
+//        }
+//        if (fileName?.lowercase()?.endsWith("xlsx") == true) {
+//            return com.cherry.lib.doc.R.drawable.file_xlsx
+//        }
         if (fileName?.lowercase()?.endsWith("ppt") == true) {
             return com.cherry.lib.doc.R.drawable.ppt_ic
         }
         if (fileName?.lowercase()?.endsWith("pptx") == true) {
             return com.cherry.lib.doc.R.drawable.file_pptx
         }
-        if (fileName?.lowercase()?.endsWith("txt") == true) {
-            return com.cherry.lib.doc.R.drawable.file_txt
-        }
+//        if (fileName?.lowercase()?.endsWith("txt") == true) {
+//            return com.cherry.lib.doc.R.drawable.file_txt
+//        }
         return -1
     }
 

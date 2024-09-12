@@ -1,4 +1,4 @@
-package com.cherry.doc
+package com.innospire.pptviewer
 
 import android.Manifest
 import android.content.Intent
@@ -15,9 +15,9 @@ import android.view.View.OnClickListener
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemClickListener
 import androidx.appcompat.app.AppCompatActivity
-import com.cherry.doc.util.BasicSet
-import com.cherry.doc.util.DocUtil
-import com.cherry.doc.util.WordUtils
+import com.innospire.pptviewer.util.BasicSet
+import com.innospire.pptviewer.util.DocUtil
+import com.innospire.pptviewer.util.WordUtils
 import com.cherry.lib.doc.DocViewerActivity
 import com.cherry.lib.doc.bean.DocSourceType
 import com.cherry.lib.doc.bean.FileType
@@ -26,7 +26,8 @@ import com.cherry.permissions.lib.EasyPermissions
 import com.cherry.permissions.lib.EasyPermissions.hasPermissions
 import com.cherry.permissions.lib.annotations.AfterPermissionGranted
 import com.cherry.permissions.lib.dialogs.SettingsDialog
-import kotlinx.android.synthetic.main.activity_main.toolbar
+import com.innospire.pptviewer.R
+//import kotlinx.android.synthetic.main.activity_main.toolbar
 import kotlinx.android.synthetic.main.content_main.mRvDoc
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -138,7 +139,7 @@ class MainActivity : AppCompatActivity(),OnClickListener,OnItemClickListener,
         }
     }
     fun initView() {
-        setSupportActionBar(toolbar)
+        //setSupportActionBar(toolbar)
 
         mDocAdapter = DocAdapter(this,this)
         mRvDoc.adapter = mDocAdapter

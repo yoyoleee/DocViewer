@@ -1,4 +1,4 @@
-package com.cherry.doc
+package com.innospire.pptviewer
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,7 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import androidx.recyclerview.widget.RecyclerView
-import com.cherry.doc.data.DocInfo
+import com.innospire.pptviewer.R
+import com.innospire.pptviewer.data.DocInfo
 
 /*
  * -----------------------------------------------------------------
