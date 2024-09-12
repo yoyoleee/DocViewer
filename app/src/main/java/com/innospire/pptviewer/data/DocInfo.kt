@@ -15,9 +15,9 @@ class DocInfo {
     var album: String? = null
     var fileName: String? = null
     var path: String? = null
-    var mimeType: String? = null
+    //var mimeType: String? = null
     var lastModified: String? = null
-    var fileSize: String? = null
+    //var fileSize: String? = null
 
     fun getTypeIcon(): Int {
 //        if (fileName?.lowercase()?.endsWith("pdf") == true) {
@@ -52,7 +52,8 @@ class DocInfo {
             var type = path ?: ""
             return type.substring(type.lastIndexOf(".")).split(".")[1].uppercase()
         } catch (e: Exception) {
-            return mimeType
+            return null
+            //return mimeType
         }
 
     }

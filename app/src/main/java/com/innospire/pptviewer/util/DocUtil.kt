@@ -73,8 +73,8 @@ object DocUtil {
 
         val displayNameKey = fileCursor!!.getColumnIndexOrThrow(MediaStore.MediaColumns.DISPLAY_NAME)
         val dataKey = fileCursor!!.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA)
-        val sizeKey = fileCursor.getColumnIndexOrThrow(MediaStore.Video.Media.SIZE)
-        val typeKey = fileCursor.getColumnIndexOrThrow(MediaStore.Video.Media.MIME_TYPE)
+        //val sizeKey = fileCursor.getColumnIndexOrThrow(MediaStore.Video.Media.SIZE)
+        //val typeKey = fileCursor.getColumnIndexOrThrow(MediaStore.Video.Media.MIME_TYPE)
         val lastModifiedKey = fileCursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_MODIFIED)
         val albumKey = fileCursor.getColumnIndexOrThrow(MediaStore.Video.Media.ALBUM)
 
@@ -89,23 +89,23 @@ object DocUtil {
         while (fileCursor.moveToNext()) {
             val fileName = fileCursor.getString(displayNameKey)
             val path = fileCursor.getString(dataKey)
-            val mimeType = fileCursor.getString(typeKey)
+            //val mimeType = fileCursor.getString(typeKey)
             val album = fileCursor.getString(albumKey)
             val lastModified = fileCursor.getLong(lastModifiedKey)
-            val fileSize = fileCursor.getLong(sizeKey)
+            //val fileSize = fileCursor.getLong(sizeKey)
             Log.v(TAG,"fileName = $fileName")
             Log.v(TAG,"path = $path")
-            Log.v(TAG,"mimeType = $mimeType")
-            Log.v(TAG,"fileSize = ${getFormatSize(fileSize.toDouble())}")
+            //Log.v(TAG,"mimeType = $mimeType")
+            //Log.v(TAG,"fileSize = ${getFormatSize(fileSize.toDouble())}")
             Log.v(TAG,"lastModified = ${stampToDate(lastModified * 1000)}")
 
             var item = DocInfo()
             item.album = album
             item.fileName = fileName
             item.path = path
-            item.mimeType = mimeType
+            //item.mimeType = mimeType
             item.lastModified = stampToDate(lastModified * 1000)
-            item.fileSize = getFormatSize(fileSize.toDouble())
+            //item.fileSize = getFormatSize(fileSize.toDouble())
 
             var fileType = FileUtils.getFileTypeForUrl(path)
             if (fileType == FileType.DOC || fileType == FileType.DOCX) {

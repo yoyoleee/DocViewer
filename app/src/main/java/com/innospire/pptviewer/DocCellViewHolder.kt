@@ -45,7 +45,8 @@ class DocCellViewHolder : RecyclerView.ViewHolder,OnClickListener {
             itemView.mIvType.load(typeIcon)
         }
         itemView.mTvFileName.text = data?.fileName
-        itemView.mTvFileDes.text = "${data?.getFileType()} | ${data?.fileSize}\n${data?.lastModified}"
+        //itemView.mTvFileDes.text = "${data?.getFileType()} | ${data?.fileSize}\n${data?.lastModified}"
+        itemView.mTvFileDes.text = "${data?.lastModified}"
 
         val type = FileUtils.getFileTypeForUrl(data?.path)
         when (type) {

@@ -16,8 +16,8 @@
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:title="LocalStorage"/>
+            android:layout_height="match_parent"
+            app:title="LocalStorage" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
