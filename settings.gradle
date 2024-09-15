@@ -11,6 +11,9 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven { setUrl("https://jitpack.io") }
+
+        jcenter()
+        maven{url 'https://gitee.com/inmolens/inmo-ar-sdk/raw/master'}
     }
 }
 rootProject.name = "DocViewer"

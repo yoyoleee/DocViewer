@@ -34,4 +34,5 @@ class WordActivity : AppCompatActivity() {
             Toast.makeText(this, "打开失败", Toast.LENGTH_SHORT).show()
         }
     }
+
 }

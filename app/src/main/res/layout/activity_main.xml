@@ -16,11 +16,14 @@
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:title="LocalStorage" />
+            android:layout_height="wrap_content"
+            app:title="LocalStorage"
+            android:focusable="true"
+            android:focusableInTouchMode="true" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <!-- Ensure content_main.xml elements are also focusable -->
     <include layout="@layout/content_main" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -59,6 +59,8 @@ dependencies {
     implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
     // implementation 'com.googlecode.juniversalchardet:juniversalchardet:1.0.3' //这种方式打成aar包会丢失该引用
 
+    implementation 'com.inmo:inmo_arsdk:0.0.1'
+
 }
 
 afterEvaluate {
