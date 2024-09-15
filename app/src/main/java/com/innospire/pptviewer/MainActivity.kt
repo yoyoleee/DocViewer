@@ -152,22 +152,6 @@ class MainActivity : AppCompatActivity(),OnClickListener,OnItemClickListener,
         }
     }
 
-    fun word2Html(sourceFilePath: String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            val htmlFilePath = cacheDir.absolutePath + "/html"
-            val htmlFileName = "word_pdf"
-
-            var bs = BasicSet(this@MainActivity,sourceFilePath,htmlFilePath, htmlFileName)
-            bs.picturePath = htmlFilePath
-
-            WordUtils.getInstance(bs).word2html()
-
-            CoroutineScope(Dispatchers.Main).launch {
-
-            }
-        }
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
