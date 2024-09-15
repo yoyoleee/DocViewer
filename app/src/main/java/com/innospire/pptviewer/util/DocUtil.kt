@@ -30,7 +30,8 @@ object DocUtil {
         val ppt = MimeTypeMap.getSingleton().getMimeTypeFromExtension("ppt")
         val pptx = MimeTypeMap.getSingleton().getMimeTypeFromExtension("pptx")
         //Table
-        val table = MediaStore.Files.getContentUri(MediaStore.VOLUME_EXTERNAL)
+        //val table = MediaStore.Files.getContentUri(MediaStore.VOLUME_EXTERNAL)
+        val table = MediaStore.Downloads.EXTERNAL_CONTENT_URI
         //Column
         val column = arrayOf(
             MediaStore.Files.FileColumns.DATA,
