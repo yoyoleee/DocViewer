@@ -8,7 +8,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
     app:contentPadding="10dp"
-    app:cardBackgroundColor="@color/white"
+    app:cardBackgroundColor="@color/grey"
     app:cardCornerRadius="8dp"
     app:cardElevation="8dp"
     android:clickable="true"
@@ -41,7 +41,7 @@
             android:layout_marginStart="10dp"
             android:gravity="center"
             android:textSize="12sp"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             tools:text="TBSFileTest.xls"/>
 
         <TextView
@@ -55,7 +55,7 @@
             android:gravity="center"
             android:lineSpacingMultiplier="1.2"
             android:textSize="10sp"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             tools:text="PDF | 26.82MB \n2023/10/25 15:58"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
