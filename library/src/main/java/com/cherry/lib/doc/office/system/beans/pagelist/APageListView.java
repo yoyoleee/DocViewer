@@ -18,12 +18,14 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.util.Log;
 import android.util.SparseArray;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.Adapter;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
 public class APageListView extends AdapterView<Adapter>
 {
@@ -71,8 +73,27 @@ public class APageListView extends AdapterView<Adapter>
     {
         isInit = true;
         requestLayout();
+        this.setFocusable(true);
+        this.setFocusableInTouchMode(true);
+        this.requestFocus();
     }
-    
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        Log.d("APageListView", "onKeyDown called with keyCode: " + keyCode);
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_DPAD_UP:
+            case KeyEvent.KEYCODE_DPAD_LEFT:
+                previousPageview();
+                return true;
+            case KeyEvent.KEYCODE_DPAD_DOWN:
+            case KeyEvent.KEYCODE_DPAD_RIGHT:
+                nextPageView();
+                return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
+    }
+
     /**
      *
      *
