@@ -25,7 +25,6 @@ import com.cherry.permissions.lib.annotations.AfterPermissionGranted
 import com.cherry.permissions.lib.dialogs.SettingsDialog
 import com.innospire.pptviewer.util.BasicSet
 import com.innospire.pptviewer.util.DocUtil
-import com.innospire.pptviewer.util.WordUtils
 import kotlinx.android.synthetic.main.activity_main.toolbar
 import kotlinx.android.synthetic.main.content_main.mRvDoc
 import kotlinx.coroutines.CoroutineScope

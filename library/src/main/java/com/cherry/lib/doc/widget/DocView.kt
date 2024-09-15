@@ -63,7 +63,7 @@ import java.net.URLEncoder
  * -----------------------------------------------------------------
  */
 
-class DocView : FrameLayout,OnDownloadListener, OnWebLoadListener,OnPdfItemClickListener {
+class DocView : FrameLayout,OnPdfItemClickListener {
 
     private val TAG = "DocView"
 
@@ -192,17 +192,6 @@ class DocView : FrameLayout,OnDownloadListener, OnWebLoadListener,OnPdfItemClick
         } else {
             sourceFilePath = null
         }
-        if (docSourceType == DocSourceType.URL && fileType != FileType.IMAGE) {
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP
-                || engine == DocEngine.MICROSOFT
-                || engine == DocEngine.XDOC
-                || engine == DocEngine.GOOGLE) {
-                showByWeb(docUrl ?: "",engine)
-                return
-            }
-            downloadFile(docUrl ?: "")
-            return
-        }
 
         var type = FileUtils.getFileTypeForUrl(docUrl)
         if (fileType > 0) {
@@ -244,7 +233,6 @@ class DocView : FrameLayout,OnDownloadListener, OnWebLoadListener,OnPdfItemClick
                 mFlDocContainer.hide()
                 mRvPdf.hide()
                 mIvImage.hide()
-                showByWeb(docUrl ?: "",this.engine)
             }
             else -> {
                 Log.e(TAG,"openDoc()......ELSE")
@@ -315,10 +303,6 @@ class DocView : FrameLayout,OnDownloadListener, OnWebLoadListener,OnPdfItemClick
     fun showPdf(docSourceType: Int, url: String?) {
         Log.e(TAG,"showPdf()......quality = $quality")
         when (docSourceType) {
-            DocSourceType.URL -> {
-                Log.e(TAG,"showPdf()......URL")
-                initWithUrl(url = url ?: "", pdfQuality = quality)
-            }
             DocSourceType.URI -> {
                 Log.e(TAG,"showPdf()......URI")
                 initWithUri(fileUri = url ?: "", pdfQuality = quality)
@@ -361,15 +345,6 @@ class DocView : FrameLayout,OnDownloadListener, OnWebLoadListener,OnPdfItemClick
         }
     }
 
-    fun initWithUrl(
-        url: String,
-        pdfQuality: PdfQuality = this.quality,
-        engine: DocEngine = this.engine,
-        lifecycleScope: LifecycleCoroutineScope = (context as AppCompatActivity).lifecycleScope
-    ) {
-        this.lifecycleScope = lifecycleScope
-        downloadFile(url, pdfQuality, lifecycleScope)
-    }
 
     fun initWithPath(path: String, pdfQuality: PdfQuality = this.quality) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
@@ -397,70 +372,6 @@ class DocView : FrameLayout,OnDownloadListener, OnWebLoadListener,OnPdfItemClick
 
         val file = FileUtils.fileFromUri(context,fileUri)
         showPdf(file, pdfQuality)
-    }
-
-    fun downloadFile(url: String, pdfQuality: PdfQuality = this.quality,
-                     lifecycleScope: LifecycleCoroutineScope = (context as AppCompatActivity).lifecycleScope) {
-        PdfDownloader(url, this)
-    }
-
-    @SuppressLint("SetJavaScriptEnabled")
-    private fun showByWeb(url: String,engine: DocEngine = this.engine) {
-        mDocWeb.mOnWebLoadListener = this
-
-        var engineUrl = "engine"
-        when (engine) {
-            DocEngine.MICROSOFT -> {
-                engineUrl = Constant.MICROSOFT_URL
-            }
-            DocEngine.XDOC -> {
-                engineUrl = Constant.XDOC_VIEW_URL
-            }
-            DocEngine.GOOGLE -> {
-                engineUrl = Constant.GOOGLE_URL
-            }
-            else -> {
-                engineUrl = Constant.XDOC_VIEW_URL
-            }
-        }
-        mDocWeb.loadUrl("$engineUrl${URLEncoder.encode(url, "UTF-8")}")
-    }
-
-    override fun getDownloadContext() = context
-
-    override fun onDownloadStart() {
-        Log.e(TAG,"initWithUrl-onDownloadStart()......")
-    }
-
-    override fun onDownloadProgress(currentBytes: Long, totalBytes: Long) {
-        var progress = (currentBytes.toFloat() / totalBytes.toFloat() * 100F).toInt()
-        if (progress >= 100) {
-            progress = 100
-        }
-        Log.e(TAG,"initWithUrl-onDownloadProgress()......progress = $progress")
-        showLoadingProgress(progress)
-    }
-
-    override fun onDownloadSuccess(absolutePath: String) {
-        Log.e(TAG,"initWithUrl-onDownloadSuccess()......")
-        showLoadingProgress(100)
-        sourceFilePath = absolutePath
-        openDoc(mActivity, absolutePath, DocSourceType.PATH,-1,mViewPdfInPage)
-    }
-
-    override fun onError(error: Throwable) {
-        error.printStackTrace()
-        Log.e(TAG,"initWithUrl-onError()......${error.localizedMessage}")
-        showLoadingProgress(100)
-    }
-
-    override fun getCoroutineScope() = lifecycleScope
-
-    override fun OnWebLoadProgress(progress: Int) {
-        showLoadingProgress(progress)
-    }
-
-    override fun onTitle(title: String?) {
     }
 
     fun showLoadingProgress(progress: Int) {
