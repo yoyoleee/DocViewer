@@ -8,16 +8,13 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.Settings
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
+import android.view.KeyEvent
 import android.view.View
 import android.view.View.OnClickListener
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemClickListener
+import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
-import com.innospire.pptviewer.util.BasicSet
-import com.innospire.pptviewer.util.DocUtil
-import com.innospire.pptviewer.util.WordUtils
 import com.cherry.lib.doc.DocViewerActivity
 import com.cherry.lib.doc.bean.DocSourceType
 import com.cherry.lib.doc.bean.FileType
@@ -26,13 +23,14 @@ import com.cherry.permissions.lib.EasyPermissions
 import com.cherry.permissions.lib.EasyPermissions.hasPermissions
 import com.cherry.permissions.lib.annotations.AfterPermissionGranted
 import com.cherry.permissions.lib.dialogs.SettingsDialog
-import com.innospire.pptviewer.R
+import com.innospire.pptviewer.util.BasicSet
+import com.innospire.pptviewer.util.DocUtil
+import com.innospire.pptviewer.util.WordUtils
 import kotlinx.android.synthetic.main.activity_main.toolbar
 import kotlinx.android.synthetic.main.content_main.mRvDoc
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import android.view.KeyEvent
 
 class MainActivity : AppCompatActivity(),OnClickListener,OnItemClickListener,
     EasyPermissions.PermissionCallbacks {
@@ -42,12 +40,8 @@ class MainActivity : AppCompatActivity(),OnClickListener,OnItemClickListener,
         const val REQUEST_CODE_SELECT_DOCUMENT = 0x100
         const val TAG = "MainActivity"
     }
-    var url = "http://cdn07.foxitsoftware.cn/pub/foxit/manual/phantom/en_us/API%20Reference%20for%20Application%20Communication.pdf"
 
     var mDocAdapter: DocAdapter? = null
-
-    private var menuItems: List<MenuItem>? = null
-    private var selectedMenuIndex = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +49,15 @@ class MainActivity : AppCompatActivity(),OnClickListener,OnItemClickListener,
 
         initView()
         initData()
+
+        val plusButton: ImageButton = findViewById(R.id.plusButton)
+        plusButton.setOnClickListener {
+            // 使用Intent打开文件管理器并选择文档
+            val intent = Intent(Intent.ACTION_GET_CONTENT)
+            intent.setType("*/*") // 设置要选择的文件类型，此处为任意文件类型
+
+            startActivityForResult(intent, REQUEST_CODE_SELECT_DOCUMENT) // 启动Activity并设置请求码
+        }
     }
 
     private fun hasRwPermission(): Boolean {
@@ -106,50 +109,6 @@ class MainActivity : AppCompatActivity(),OnClickListener,OnItemClickListener,
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
-
-
-        // Get the menu items as a list for navigation
-        menuItems = listOf(
-            menu.findItem(R.id.action_assets),
-            menu.findItem(R.id.action_online),
-            menu.findItem(R.id.action_select)
-        )
-
-        // Initially "focus" on the first menu item
-        highlightMenuItem(selectedMenuIndex)
-
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_assets -> {
-                openDoc("test.docx",DocSourceType.ASSETS)
-                return true
-            }
-            R.id.action_online -> {
-                openDoc(url,DocSourceType.URL,null)
-                return true
-            }
-            R.id.action_select -> {
-                // 使用Intent打开文件管理器并选择文档
-
-                // 使用Intent打开文件管理器并选择文档
-                val intent = Intent(Intent.ACTION_GET_CONTENT)
-                intent.setType("*/*") // 设置要选择的文件类型，此处为任意文件类型
-
-                startActivityForResult(intent, REQUEST_CODE_SELECT_DOCUMENT) // 启动Activity并设置请求码
-                return true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
     fun initView() {
         setSupportActionBar(toolbar)
 
@@ -268,54 +227,21 @@ class MainActivity : AppCompatActivity(),OnClickListener,OnItemClickListener,
 
     }
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        // Handle D-pad or keyboard events for navigating the menu
-        return when (keyCode) {
-            KeyEvent.KEYCODE_DPAD_UP -> {
-                moveMenuSelectionUp()
-                true
-            }
-            KeyEvent.KEYCODE_DPAD_DOWN -> {
-                moveMenuSelectionDown()
-                true
-            }
+        when (keyCode) {
             KeyEvent.KEYCODE_ENTER -> {
-                // Trigger the selected menu item's action
-                menuItems?.get(selectedMenuIndex)?.let { selectedMenuItem ->
-                    when (selectedMenuItem.itemId) {
-                        R.id.action_assets -> {
-                            openDoc("test.docx", DocSourceType.ASSETS)
-                        }
-                        R.id.action_select -> {
-                            val intent = Intent(Intent.ACTION_GET_CONTENT)
-                            intent.type = "*/*" // Set the file type to be selected
-                            startActivityForResult(intent, REQUEST_CODE_SELECT_DOCUMENT)
-                        }
-                        // You can add additional cases for other menu items here if needed
-                    }
-                }
-                true
+                // Handle the business logic for KEYCODE_ENTER
+                // 使用Intent打开文件管理器并选择文档
+                val intent = Intent(Intent.ACTION_GET_CONTENT)
+                intent.setType("*/*") // 设置要选择的文件类型，此处为任意文件类型
+
+                startActivityForResult(intent, REQUEST_CODE_SELECT_DOCUMENT) // 启动Activity并设置请求码
+
+                return true
             }
-            else -> super.onKeyDown(keyCode, event)
+            // Add more cases here if needed for different key codes
+            else -> return super.onKeyDown(keyCode, event)
         }
     }
 
-    private fun moveMenuSelectionUp() {
-        selectedMenuIndex = if (selectedMenuIndex > 0) selectedMenuIndex - 1 else menuItems!!.size - 1
-        highlightMenuItem(selectedMenuIndex)
-    }
-
-    private fun moveMenuSelectionDown() {
-        selectedMenuIndex = (selectedMenuIndex + 1) % menuItems!!.size
-        highlightMenuItem(selectedMenuIndex)
-    }
-
-    private fun highlightMenuItem(index: Int) {
-        // This method highlights or emphasizes the selected menu item (you can customize it)
-        // For example, you could log the selected item or show a toast for user feedback.
-        menuItems?.get(index)?.let {
-            // Log the item title to indicate selection (replace with a visual highlight if needed)
-            Log.d(TAG, "Selected menu item: ${it.title}")
-        }
-    }
 
 }
