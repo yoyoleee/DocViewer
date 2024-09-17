@@ -3,6 +3,7 @@ package com.innospire.pptviewer
 import android.view.View
 import android.view.View.OnClickListener
 import android.widget.AdapterView.OnItemClickListener
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.innospire.pptviewer.data.DocGroupInfo
 import kotlinx.android.synthetic.main.rv_doc_cell.view.*
@@ -30,11 +31,13 @@ class DocViewHolder : RecyclerView.ViewHolder,OnClickListener {
 //        itemView.mRvDocCell.onFlingListener = null
 //        LinearSnapHelper().attachToRecyclerView(itemView.mRvDocCell)
 
-        var cellAdapter = DocCellAdapter(itemView.context,mOnItemClickListener,
+        val cellAdapter = DocCellAdapter(itemView.context,mOnItemClickListener,
             adapterPosition)
         cellAdapter.showDatas(data?.docList)
 
         itemView.mRvDocCell.adapter = cellAdapter
+        val gridLayoutManager = GridLayoutManager(itemView.context, 3) // 3 columns
+        itemView.mRvDocCell.layoutManager = gridLayoutManager
     }
 
     override fun onClick(v: View?) {
