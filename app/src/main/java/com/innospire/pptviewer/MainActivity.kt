@@ -2,6 +2,7 @@ package com.innospire.pptviewer
 
 import android.Manifest
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -14,6 +15,7 @@ import android.view.View.OnClickListener
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.cherry.lib.doc.DocViewerActivity
 import com.cherry.lib.doc.bean.DocSourceType
@@ -25,6 +27,7 @@ import com.cherry.permissions.lib.annotations.AfterPermissionGranted
 import com.cherry.permissions.lib.dialogs.SettingsDialog
 import com.innospire.pptviewer.util.BasicSet
 import com.innospire.pptviewer.util.DocUtil
+import kotlinx.android.synthetic.main.activity_main.plusButton
 import kotlinx.android.synthetic.main.activity_main.toolbar
 import kotlinx.android.synthetic.main.content_main.mRvDoc
 import kotlinx.android.synthetic.main.rv_doc_cell.mRvDocCell
@@ -53,6 +56,15 @@ class MainActivity : AppCompatActivity(),OnClickListener,OnItemClickListener,
         initData()
 
         val plusButton: ImageButton = findViewById(R.id.plusButton)
+        plusButton.isFocusable = true
+        plusButton.isFocusableInTouchMode = true
+        plusButton.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                plusButton.setBackgroundColor(Color.YELLOW) // Change background to blue when focused
+            } else {
+                plusButton.setBackgroundColor(Color.TRANSPARENT) // Set background to transparent when not focused
+            }
+        }
         plusButton.setOnClickListener {
             // 使用Intent打开文件管理器并选择文档
             val intent = Intent(Intent.ACTION_GET_CONTENT)
@@ -214,41 +226,45 @@ class MainActivity : AppCompatActivity(),OnClickListener,OnItemClickListener,
 
     }
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        Log.d("hihihi", currentFocusIndex.toString())
         when (keyCode) {
             KeyEvent.KEYCODE_DPAD_LEFT -> {
-                if(currentFocusIndex > 0){
+                if (currentFocusIndex > 0) {
                     currentFocusIndex--
                     setFocusToItem(currentFocusIndex)
+                } else {
+                    currentFocusIndex = -1
+                    Log.d("FocusIndex", currentFocusIndex.toString())
+                    plusButton.requestFocus()
                 }
                 return true
             }
+
             KeyEvent.KEYCODE_DPAD_RIGHT -> {
-                if(currentFocusIndex < totalCellCount-1){
+                if (currentFocusIndex < totalCellCount - 1) {
                     currentFocusIndex++
                     setFocusToItem(currentFocusIndex)
                 }
                 return true
             }
+
             KeyEvent.KEYCODE_DPAD_UP -> {
-                val focusedView = currentFocus
-                if (focusedView != null && focusedView.id == R.id.mCvDocCell) {
-                    val position = mRvDocCell.getChildAdapterPosition(focusedView)
-                    val path = mDocAdapter?.datas?.get(0)?.docList?.get(position)?.path ?: ""
-                    if (checkSupport(path)) {
-                        openDoc(path, DocSourceType.PATH)
-                    }
+                if (currentFocusIndex > 0) {
+                    currentFocusIndex = if (currentFocusIndex < 3) 0 else currentFocusIndex - 3
+                    setFocusToItem(currentFocusIndex)
+                } else {
+                    currentFocusIndex = -1
+                    plusButton.requestFocus()
                 }
                 return true
             }
-            KeyEvent.KEYCODE_ENTER -> {
-                // Handle the business logic for KEYCODE_ENTER
-                // 使用Intent打开文件管理器并选择文档
-                val intent = Intent(Intent.ACTION_GET_CONTENT)
-                intent.setType("*/*") // 设置要选择的文件类型，此处为任意文件类型
 
-                startActivityForResult(intent, REQUEST_CODE_SELECT_DOCUMENT) // 启动Activity并设置请求码
-
+            KeyEvent.KEYCODE_DPAD_DOWN -> {
+                if (currentFocusIndex == -1) {
+                    currentFocusIndex = 0
+                } else if (currentFocusIndex < totalCellCount - 1) {
+                    currentFocusIndex = if (currentFocusIndex + 3 < totalCellCount) currentFocusIndex + 3 else totalCellCount - 1
+                }
+                setFocusToItem(currentFocusIndex)
                 return true
             }
             // Add more cases here if needed for different key codes
@@ -257,6 +273,8 @@ class MainActivity : AppCompatActivity(),OnClickListener,OnItemClickListener,
     }
     // Function to focus a particular item in the RecyclerView by its position
     private fun setFocusToItem(position: Int) {
+
+        Log.d("hihihi", position.toString())
         val viewHolder = mRvDocCell.findViewHolderForAdapterPosition(position)
         if (viewHolder != null) {
             viewHolder.itemView.requestFocus()
@@ -270,5 +288,6 @@ class MainActivity : AppCompatActivity(),OnClickListener,OnItemClickListener,
             }
         }
     }
+
 
 }
