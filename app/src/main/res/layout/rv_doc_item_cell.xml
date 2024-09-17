@@ -12,6 +12,8 @@
     app:cardCornerRadius="8dp"
     app:cardElevation="8dp"
     android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:foreground="?attr/selectableItemBackground">
 
     <androidx.constraintlayout.widget.ConstraintLayout

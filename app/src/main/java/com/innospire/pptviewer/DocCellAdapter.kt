@@ -1,13 +1,16 @@
 package com.innospire.pptviewer
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.innospire.pptviewer.R
 import com.innospire.pptviewer.data.DocInfo
+import kotlinx.android.synthetic.main.rv_doc_cell.mRvDocCell
 
 /*
  * -----------------------------------------------------------------
@@ -26,7 +29,7 @@ class DocCellAdapter(var context: Context,
     : RecyclerView.Adapter<DocCellViewHolder>() {
 
     var datas = ArrayList<DocInfo>()
-
+    var isSetup: Boolean = true
     fun showDatas(docList: ArrayList<DocInfo>?) {
         datas.clear()
         docList?.let { datas.addAll(it) }
@@ -44,6 +47,20 @@ class DocCellAdapter(var context: Context,
     override fun onBindViewHolder(holder: DocCellViewHolder, position: Int) {
         holder.mOnItemClickListener = listener
         holder.bindData(datas[position])
+        holder.cardView.setOnFocusChangeListener { view, hasFocus ->
+            if (hasFocus) {
+                // Perform actions when this view gains focus
+                view.setBackgroundColor(ContextCompat.getColor(view.context, R.color.teal_700))
+                Log.d("RecyclerView", "CardView at position $position gained focus")
+            } else {
+                // Perform actions when the view loses focus
+                view.setBackgroundColor(ContextCompat.getColor(context, R.color.listItemColorPPT))
+            }
+        }
+        if(isSetup){
+            isSetup = false
+            holder.cardView.requestFocus()
+        }
     }
 
     fun inflate(layoutId: Int,parent: ViewGroup): View {

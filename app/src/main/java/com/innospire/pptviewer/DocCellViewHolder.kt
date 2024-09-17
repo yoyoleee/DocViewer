@@ -3,6 +3,7 @@ package com.innospire.pptviewer
 import android.view.View
 import android.view.View.OnClickListener
 import android.widget.AdapterView.OnItemClickListener
+import androidx.cardview.widget.CardView
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
@@ -13,6 +14,7 @@ import kotlinx.android.synthetic.main.rv_doc_item_cell.view.*
 import java.io.File
 
 class DocCellViewHolder : RecyclerView.ViewHolder,OnClickListener {
+    val cardView: CardView = itemView.findViewById(R.id.mCvDocCell)
     var mOnItemClickListener: OnItemClickListener? = null
     var parentPosition: Int = 0
     constructor(itemView: View, groupPosition: Int) : super(itemView) {

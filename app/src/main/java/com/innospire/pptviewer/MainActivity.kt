@@ -27,6 +27,7 @@ import com.innospire.pptviewer.util.BasicSet
 import com.innospire.pptviewer.util.DocUtil
 import kotlinx.android.synthetic.main.activity_main.toolbar
 import kotlinx.android.synthetic.main.content_main.mRvDoc
+import kotlinx.android.synthetic.main.rv_doc_cell.mRvDocCell
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -40,7 +41,9 @@ class MainActivity : AppCompatActivity(),OnClickListener,OnItemClickListener,
         const val TAG = "MainActivity"
     }
 
-    var mDocAdapter: DocAdapter? = null
+    private var mDocAdapter: DocAdapter? = null
+    private var totalCellCount: Int = 0
+    private var currentFocusIndex: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,6 +81,7 @@ class MainActivity : AppCompatActivity(),OnClickListener,OnItemClickListener,
                 var datas = DocUtil.getDocFile(this@MainActivity)
                 CoroutineScope(Dispatchers.Main).launch {
                     mDocAdapter?.showDatas(datas)
+                    totalCellCount = mDocAdapter?.datas?.sumOf { it.docList?.size ?: 0 }!!
                 }
             }
         } else {
@@ -210,7 +214,33 @@ class MainActivity : AppCompatActivity(),OnClickListener,OnItemClickListener,
 
     }
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        Log.d("hihihi", currentFocusIndex.toString())
         when (keyCode) {
+            KeyEvent.KEYCODE_DPAD_LEFT -> {
+                if(currentFocusIndex > 0){
+                    currentFocusIndex--
+                    setFocusToItem(currentFocusIndex)
+                }
+                return true
+            }
+            KeyEvent.KEYCODE_DPAD_RIGHT -> {
+                if(currentFocusIndex < totalCellCount-1){
+                    currentFocusIndex++
+                    setFocusToItem(currentFocusIndex)
+                }
+                return true
+            }
+            KeyEvent.KEYCODE_DPAD_UP -> {
+                val focusedView = currentFocus
+                if (focusedView != null && focusedView.id == R.id.mCvDocCell) {
+                    val position = mRvDocCell.getChildAdapterPosition(focusedView)
+                    val path = mDocAdapter?.datas?.get(0)?.docList?.get(position)?.path ?: ""
+                    if (checkSupport(path)) {
+                        openDoc(path, DocSourceType.PATH)
+                    }
+                }
+                return true
+            }
             KeyEvent.KEYCODE_ENTER -> {
                 // Handle the business logic for KEYCODE_ENTER
                 // 使用Intent打开文件管理器并选择文档
@@ -225,6 +255,20 @@ class MainActivity : AppCompatActivity(),OnClickListener,OnItemClickListener,
             else -> return super.onKeyDown(keyCode, event)
         }
     }
-
+    // Function to focus a particular item in the RecyclerView by its position
+    private fun setFocusToItem(position: Int) {
+        val viewHolder = mRvDocCell.findViewHolderForAdapterPosition(position)
+        if (viewHolder != null) {
+            viewHolder.itemView.requestFocus()
+            Log.d("MainActivity", "Focus set to position: $position")
+        } else {
+            // If the view holder is not visible, scroll the RecyclerView to that position
+            mRvDocCell.scrollToPosition(position)
+            mRvDocCell.post {
+                val newViewHolder = mRvDocCell.findViewHolderForAdapterPosition(position)
+                newViewHolder?.itemView?.requestFocus()
+            }
+        }
+    }
 
 }
