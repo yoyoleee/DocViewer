@@ -77,21 +77,82 @@ public class APageListView extends AdapterView<Adapter>
         this.setFocusableInTouchMode(true);
         this.requestFocus();
     }
+    private Boolean enlargeMode = false;
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        Log.d("APageListView", "onKeyDown called with keyCode: " + keyCode);
+        int step = 10; // Adjust the step size for each movement
         switch (keyCode) {
             case KeyEvent.KEYCODE_DPAD_UP:
-            case KeyEvent.KEYCODE_DPAD_LEFT:
-                previousPageview();
+                if(enlargeMode){
+                    moveViewVertically(-step); // Negative value moves up
+                }else {
+                    previousPageview();
+                    setZoom(getFitZoom(1), false);
+                }
                 return true;
             case KeyEvent.KEYCODE_DPAD_DOWN:
-            case KeyEvent.KEYCODE_DPAD_RIGHT:
-                nextPageView();
+                if(enlargeMode){
+                    moveViewVertically(step); // Negative value moves up
+                }else {
+                    nextPageView();
+                    setZoom(getFitZoom(1), false);
+                }
                 return true;
+            case KeyEvent.KEYCODE_DPAD_LEFT:
+                if(enlargeMode){
+                    moveViewHorizontally(-step); // Negative value moves left
+                }else {
+                    previousPageview();
+                    setZoom(getFitZoom(1), false);
+                }
+                return true;
+            case KeyEvent.KEYCODE_DPAD_RIGHT:
+                if(enlargeMode){
+                    moveViewHorizontally(step); // Negative value moves left
+                }else {
+                    nextPageView();
+                    setZoom(getFitZoom(1), false);
+                }
+                return true;
+            case KeyEvent.KEYCODE_ENTER:
+                if(enlargeMode){
+                    getCurrentPageView().scrollTo(0,0);
+                    setZoom(getFitZoom(1), true);
+                }else {
+                    setZoom(4, true);
+                }
+                enlargeMode = !enlargeMode;
+                return true;
+            default:
+                return super.onKeyDown(keyCode, event);
         }
+    }
 
-        return super.onKeyDown(keyCode, event);
+    // Function to move the view vertically
+    private void moveViewVertically(int offset) {
+        APageListItem currentView = childViewsCache.get(currentIndex);
+        Point cvOffset = getScreenSizeOffset(currentView);
+        int currentY = getCurrentPageView().getScrollY();
+        if(currentY + offset < (currentView.getTop() + currentView.getMeasuredHeight()
+                + cvOffset.y + GAP / 2 + eventManage.getScrollY())/2
+                && currentY + offset > currentView.getTop() - cvOffset.y - GAP / 2 + eventManage.getScrollY()
+        ){
+            getCurrentPageView().scrollTo(getCurrentPageView().getScrollX(), currentY + offset);
+        }
+    }
+
+    // Function to move the view horizontally
+    private void moveViewHorizontally(int offset) {
+        APageListItem currentView = childViewsCache.get(currentIndex);
+        Point cvOffset = getScreenSizeOffset(currentView);
+        int currentX = getCurrentPageView().getScrollX();
+        if (currentX + offset < (currentView.getLeft() + currentView.getMeasuredWidth()
+                + cvOffset.x + GAP / 2 + eventManage.getScrollX())/2
+                && currentX + offset > (currentView.getLeft() - cvOffset.x - GAP / 2 + eventManage.getScrollX()))
+        {
+            getCurrentPageView().scrollTo(currentX + offset, getCurrentPageView().getScrollY());
+
+        }
     }
 
     /**
