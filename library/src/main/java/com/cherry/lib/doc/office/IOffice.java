@@ -3,6 +3,8 @@ package com.cherry.lib.doc.office;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.os.Environment;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -29,6 +31,8 @@ public abstract class IOffice implements IMainFrame {
     //view background
     private Object bg = Color.LTGRAY;
     private String tempFilePath;
+    private String fileName;
+    private boolean isFirst = true;
 
     public IOffice() {
         initControl();
@@ -54,7 +58,10 @@ public abstract class IOffice implements IMainFrame {
             }
 
             public void callBack(Bitmap bitmap) {
-                saveBitmapToFile(bitmap);
+                if(isFirst){
+                    isFirst = false;
+                    saveBitmapToFile(bitmap);
+                }
             }
 
             private Bitmap bitmap;
@@ -83,20 +90,25 @@ public abstract class IOffice implements IMainFrame {
         if (bitmap == null) {
             return;
         }
+        /*
         if (tempFilePath == null) {
             // 存在外部目录相册中会显示
-            // String state = Environment.getExternalStorageState();
-            // if (Environment.MEDIA_MOUNTED.equals(state)) {
-            //     tempFilePath = Environment.getExternalStorageDirectory().getAbsolutePath();
-            // }
-            tempFilePath = "/data/data/" + AppUtils.getAppPackageName() + "/cache";
+//             String state = Environment.getExternalStorageState();
+//             if (Environment.MEDIA_MOUNTED.equals(state)) {
+//                 tempFilePath = Environment.getExternalStorageDirectory().getAbsolutePath();
+//             }
+            //tempFilePath = "/data/data/" + AppUtils.getAppPackageName() + "/cache";
             File file = new File(tempFilePath + File.separatorChar + "tempPic");
             if (!file.exists()) {
                 file.mkdir();
             }
             tempFilePath = file.getAbsolutePath();
         }
-        File file = new File(tempFilePath + File.separatorChar + "export_image.jpg");
+
+         */
+        //File file = new File(tempFilePath + File.separatorChar + "export_image.jpg");
+        File file = new File(tempFilePath + File.separatorChar + fileName + ".jpg");
+
         try {
             if (file.exists()) {
                 file.delete();
@@ -116,6 +128,12 @@ public abstract class IOffice implements IMainFrame {
     }
 
     public void openFile(String filepath, int docSourceType, String fileType) {
+        File file = new File(filepath);
+        tempFilePath = file.getParent();
+        fileName = file.getName();
+        if (fileName.contains(".")) {
+            fileName = fileName.substring(0, fileName.lastIndexOf('.'));  // Remove extension
+        }
         getControl().openFile(filepath, docSourceType, fileType);
     }
 

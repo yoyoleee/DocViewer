@@ -1,5 +1,6 @@
 package com.innospire.pptviewer
 
+import android.util.Log
 import android.view.View
 import android.view.View.OnClickListener
 import android.widget.AdapterView.OnItemClickListener
@@ -24,15 +25,20 @@ class DocCellViewHolder : RecyclerView.ViewHolder,OnClickListener {
 
     fun bindData(data: DocInfo?) {
         var typeIcon = data?.getTypeIcon() ?: -1
+        var file = File(data?.path)
         if (typeIcon == -1) {
-            var file = File(data?.path)
             if (file.exists()) {
                 itemView.mIvType.load(File(data?.path))
             } else {
                 itemView.mIvType.load(com.cherry.lib.doc.R.drawable.all_doc_ic)
             }
         } else {
-            itemView.mIvType.load(typeIcon)
+            val JPGFile = File(file.parent, file.nameWithoutExtension + ".jpg")
+            if(JPGFile.exists()){
+                itemView.mIvType.load(JPGFile)
+            }else{
+                itemView.mIvType.load(typeIcon)
+            }
         }
         itemView.mTvFileName.text = data?.fileName
         itemView.mTvFileDes.text = "${data?.lastModified}"
