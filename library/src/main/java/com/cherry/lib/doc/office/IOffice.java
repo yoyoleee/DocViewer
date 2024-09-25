@@ -90,14 +90,14 @@ public abstract class IOffice implements IMainFrame {
         if (bitmap == null) {
             return;
         }
-        /*
+
         if (tempFilePath == null) {
             // 存在外部目录相册中会显示
 //             String state = Environment.getExternalStorageState();
 //             if (Environment.MEDIA_MOUNTED.equals(state)) {
 //                 tempFilePath = Environment.getExternalStorageDirectory().getAbsolutePath();
 //             }
-            //tempFilePath = "/data/data/" + AppUtils.getAppPackageName() + "/cache";
+            tempFilePath = "/data/data/" + AppUtils.getAppPackageName() + "/cache";
             File file = new File(tempFilePath + File.separatorChar + "tempPic");
             if (!file.exists()) {
                 file.mkdir();
@@ -105,10 +105,10 @@ public abstract class IOffice implements IMainFrame {
             tempFilePath = file.getAbsolutePath();
         }
 
-         */
+
         //File file = new File(tempFilePath + File.separatorChar + "export_image.jpg");
         File file = new File(tempFilePath + File.separatorChar + fileName + ".jpg");
-
+        Log.d("hihihisavedfile", file.toString());
         try {
             if (file.exists()) {
                 file.delete();
@@ -129,10 +129,10 @@ public abstract class IOffice implements IMainFrame {
 
     public void openFile(String filepath, int docSourceType, String fileType) {
         File file = new File(filepath);
-        tempFilePath = file.getParent();
+        //tempFilePath = file.getParent();
         fileName = file.getName();
         if (fileName.contains(".")) {
-            fileName = fileName.substring(0, fileName.lastIndexOf('.'));  // Remove extension
+            fileName = fileName.substring(0, fileName.lastIndexOf('.')) + file.lastModified();  // Remove extension
         }
         getControl().openFile(filepath, docSourceType, fileType);
     }

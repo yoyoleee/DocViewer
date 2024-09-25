@@ -8,9 +8,9 @@ import androidx.cardview.widget.CardView
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.innospire.pptviewer.data.DocInfo
 import com.cherry.lib.doc.bean.FileType
 import com.cherry.lib.doc.util.FileUtils
+import com.innospire.pptviewer.data.DocInfo
 import kotlinx.android.synthetic.main.rv_doc_item_cell.view.*
 import java.io.File
 
@@ -33,7 +33,12 @@ class DocCellViewHolder : RecyclerView.ViewHolder,OnClickListener {
                 itemView.mIvType.load(com.cherry.lib.doc.R.drawable.all_doc_ic)
             }
         } else {
-            val JPGFile = File(file.parent, file.nameWithoutExtension + ".jpg")
+
+            val packageName = "com.innospire.pptviewer"
+            val fileDirectory = File("/data/data/" + packageName + "/cache/tempPic/")
+
+            val JPGFile = File(fileDirectory, file.nameWithoutExtension + file.lastModified()+ ".jpg")
+            Log.d("hihihisearchfile", JPGFile.toString())
             if(JPGFile.exists()){
                 itemView.mIvType.load(JPGFile)
             }else{
@@ -41,7 +46,7 @@ class DocCellViewHolder : RecyclerView.ViewHolder,OnClickListener {
             }
         }
         itemView.mTvFileName.text = data?.fileName
-        itemView.mTvFileDes.text = "${data?.lastModified}"
+        //itemView.mTvFileDes.text = "${data?.lastModified}"
 
         val type = FileUtils.getFileTypeForUrl(data?.path)
         if (type == FileType.PPT || type == FileType.PPTX) {
