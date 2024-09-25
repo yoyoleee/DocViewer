@@ -288,6 +288,19 @@ class MainActivity : AppCompatActivity(),OnClickListener,OnItemClickListener,
             }
         }
     }
-
-
+    override fun onResume() {
+        super.onResume()
+        // Code to refresh the UI
+        if (hasRwPermission()) refreshUI()
+    }
+    private fun refreshUI(){
+            // Have permission, do things!
+            CoroutineScope(Dispatchers.IO).launch {
+                var datas = DocUtil.getDocFile(this@MainActivity)
+                CoroutineScope(Dispatchers.Main).launch {
+                    mDocAdapter?.showDatas(datas)
+                    totalCellCount = mDocAdapter?.datas?.sumOf { it.docList?.size ?: 0 }!!
+                }
+        }
+    }
 }
